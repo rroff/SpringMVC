@@ -24,6 +24,11 @@ public class ProductServiceImpl implements ProductService {
 		return new ArrayList<>(products.values());
 	}
 	
+	@Override
+	public Product getProductById(Integer id) {
+		return products.get(id);
+	}
+	
 	private void loadProducts() {
 		products = new HashMap<>();
 		

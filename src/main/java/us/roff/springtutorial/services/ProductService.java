@@ -7,4 +7,6 @@ import us.roff.springtutorial.domain.Product;
 public interface ProductService {
 
 	List<Product> listAllProducts();
+	
+	Product getProductById(Integer id);
 }
