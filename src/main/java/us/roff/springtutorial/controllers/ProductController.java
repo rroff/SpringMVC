@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.ProductService;
 
 @Controller
@@ -33,5 +35,21 @@ public class ProductController {
 		
 		return "product";
 		
+	}
+	
+	@RequestMapping("/product/new")
+	public String newProduct(Model model) {
+		
+		model.addAttribute("product", new Product());
+		
+		return "productform";
+	}
+	
+	@RequestMapping(value="/product", method=RequestMethod.POST)
+	public String saveOrUpdateProduct(Product product) {
+		
+		Product savedProduct = productService.saveOrUpdateProduct(product);
+		
+		return "redirect:/product/" + savedProduct.getId();
 	}
 }
