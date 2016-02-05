@@ -1,101 +1,73 @@
 package us.roff.springtutorial.services;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import us.roff.springtutorial.domain.DomainObject;
 import us.roff.springtutorial.domain.Product;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends AbstractMapService implements ProductService {
 	
-	private Map<Integer, Product> products;
-	
-	public ProductServiceImpl() {
-		loadProducts();
+	@Override
+	public List<DomainObject> listAll() {
+		return super.listAll();
 	}
 	
 	@Override
-	public List<Product> listAllProducts() {
-		return new ArrayList<>(products.values());
+	public Product getById(Integer id) {
+		return (Product)super.getById(id);
 	}
 	
 	@Override
-	public Product getProductById(Integer id) {
-		return products.get(id);
+	public Product saveOrUpdate(Product product) {
+		return (Product)super.saveOrUpdate(product);
 	}
 	
 	@Override
-	public Product saveOrUpdateProduct(Product product) {
-		if (product == null) {
-			throw new RuntimeException("Product cannot be null");
-		} else {
-			if (product.getId() == null) {
-				product.setId(getNextKey());
-			}
-			products.put(product.getId(), product);
-		}
-		return product;
+	public void deleteById(Integer id) {
+		super.deleteById(id);
 	}
 	
-	@Override
-	public void deleteProductById(Integer id) {
-		products.remove(id);
-	}
-	
-	private Integer getNextKey() {
-		Integer nextKey;
-		
-		if (products.isEmpty()) {
-			nextKey = 1;
-		} else {
-			nextKey = Collections.max(products.keySet()) + 1;
-		}
-		
-		return nextKey;
-	}
-	
-	private void loadProducts() {
-		products = new HashMap<>();
+	protected void loadDomainObjects() {
+		domainMap = new HashMap<>();
 		
 		Product product = new Product();
 		product.setId(1);
 		product.setDescription("Product 1");
 		product.setPrice(new BigDecimal("12.99"));
 		product.setImageUrl("http://example.com/product1");
-		products.put(product.getId(), product);
+		domainMap.put(product.getId(), product);
 		
 		product = new Product();
 		product.setId(2);
 		product.setDescription("Product 2");
 		product.setPrice(new BigDecimal("14.99"));
 		product.setImageUrl("http://example.com/product2");
-		products.put(product.getId(), product);
+		domainMap.put(product.getId(), product);
 		
 		product = new Product();
 		product.setId(3);
 		product.setDescription("Product 3");
 		product.setPrice(new BigDecimal("34.99"));
 		product.setImageUrl("http://example.com/product3");
-		products.put(product.getId(), product);
+		domainMap.put(product.getId(), product);
 		
 		product = new Product();
 		product.setId(4);
 		product.setDescription("Product 4");
 		product.setPrice(new BigDecimal("42.99"));
 		product.setImageUrl("http://example.com/product4");
-		products.put(product.getId(), product);
+		domainMap.put(product.getId(), product);
 		
 		product = new Product();
 		product.setId(5);
 		product.setDescription("Product 5");
 		product.setPrice(new BigDecimal("25.99"));
 		product.setImageUrl("http://example.com/product5");
-		products.put(product.getId(), product);
+		domainMap.put(product.getId(), product);
 	}
 }

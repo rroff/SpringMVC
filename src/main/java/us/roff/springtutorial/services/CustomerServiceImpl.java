@@ -1,66 +1,38 @@
 package us.roff.springtutorial.services;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import us.roff.springtutorial.domain.Customer;
+import us.roff.springtutorial.domain.DomainObject;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl extends AbstractMapService implements CustomerService {
 	
-	private Map<Integer, Customer> customers;
-	
-	public CustomerServiceImpl() {
-		loadCustomers();
+	@Override
+	public List<DomainObject> listAll() {
+		return super.listAll();
 	}
 	
 	@Override
-	public List<Customer> listAllCustomers() {
-		return new ArrayList<>(customers.values());
+	public Customer getById(Integer id) {
+		return (Customer)super.getById(id);
 	}
 	
 	@Override
-	public Customer getCustomerById(Integer id) {
-		return customers.get(id);
+	public Customer saveOrUpdate(Customer customer) {
+		return (Customer)super.saveOrUpdate(customer);
 	}
 	
 	@Override
-	public Customer saveOrUpdateCustomer(Customer customer) {
-		if (customer == null) {
-			throw new RuntimeException("Customer cannot be null");
-		} else {
-			if (customer.getId() == null) {
-				customer.setId(getNextKey());
-			}
-			customers.put(customer.getId(), customer);
-		}
-		return customer;
+	public void deleteById(Integer id) {
+		super.deleteById(id);
 	}
 	
-	@Override
-	public void deleteCustomerById(Integer id) {
-		customers.remove(id);
-	}
-	
-	private Integer getNextKey() {
-		Integer nextKey;
-		
-		if (customers.isEmpty()) {
-			nextKey = 1;
-		} else {
-			nextKey = Collections.max(customers.keySet()) + 1;
-		}
-		
-		return nextKey;
-	}
-	
-	private void loadCustomers() {
-		customers = new HashMap<>();
+	protected void loadDomainObjects() {
+		domainMap = new HashMap<>();
 		
 		Customer customer = new Customer();
 		customer.setId(1);
@@ -73,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setCity("Melbourne");
 		customer.setState("FL");
 		customer.setZipCode("32901");
-		customers.put(customer.getId(), customer);
+		domainMap.put(customer.getId(), customer);
 		
 		customer = new Customer();
 		customer.setId(2);
@@ -86,6 +58,6 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setCity("Orlando");
 		customer.setState("FL");
 		customer.setZipCode("?????");
-		customers.put(customer.getId(), customer);
+		domainMap.put(customer.getId(), customer);
 	}
 }

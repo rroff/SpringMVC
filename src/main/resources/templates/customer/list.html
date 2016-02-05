@@ -39,7 +39,7 @@
 			</tr>
 			<tr th:each="customer : ${customers}">
 				<td>
-					<a th:href="${'/customer/' + customer.id}" th:text="${customer.id}"></a>
+					<a th:href="${'/customer/show/' + customer.id}" th:text="${customer.id}"></a>
 				</td>
 				<td th:text="${customer.firstName}"></td>
 				<td th:text="${customer.lastName}"></td>
