@@ -60,4 +60,12 @@ public class ProductController {
 		
 		return "redirect:/product/" + savedProduct.getId();
 	}
+	
+	@RequestMapping("/product/delete/{id}")
+	public String edit(@PathVariable Integer id) {
+		
+		productService.deleteProductById(id);
+		
+		return "redirect:/products";
+	}
 }
