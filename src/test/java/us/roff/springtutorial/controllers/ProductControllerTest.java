@@ -10,12 +10,11 @@ import org.mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import scala.annotation.meta.param;
 import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.ProductService;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,20 +53,34 @@ public class ProductControllerTest {
 	
 	@Test
 	public void testShow() throws Exception {
-		//TODO
-		fail("Not implemented");
+		Integer id = 1;
+		
+		when(productService.getById(id)).thenReturn(new Product());
+		
+		mockMvc.perform(get("/product/show/" + id))
+			.andExpect(status().isOk())
+			.andExpect(view().name("product/show"))
+			.andExpect(model().attribute("product", instanceOf(Product.class)));
 	}
 
 	@Test
 	public void testEdit() throws Exception {
-		//TODO
-		fail("Not implemented");
+		Integer id = 1;
+		
+		when(productService.getById(id)).thenReturn(new Product());
+		
+		mockMvc.perform(get("/product/edit/" + id))
+			.andExpect(status().isOk())
+			.andExpect(view().name("product/productform"))
+			.andExpect(model().attribute("product", instanceOf(Product.class)));
 	}
 	
 	@Test
 	public void testNewProduct() throws Exception {
-		//TODO
-		fail("Not implemented");
+		mockMvc.perform(get("/product/new"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("product/productform"))
+			.andExpect(model().attribute("product", instanceOf(Product.class)));
 	}
 	
 	@Test
@@ -100,7 +113,13 @@ public class ProductControllerTest {
 				.andExpect(model().attribute("product", hasProperty("imageUrl", is(imageUrl))));
 		
 		//verify properties of bound object
-		// TODO
+		ArgumentCaptor<Product> boundProduct = ArgumentCaptor.forClass(Product.class);
+		verify(productService).saveOrUpdate(boundProduct.capture());
+		
+		assertEquals(id, boundProduct.getValue().getId());
+		assertEquals(description, boundProduct.getValue().getDescription());
+		assertEquals(price, boundProduct.getValue().getPrice());
+		assertEquals(imageUrl, boundProduct.getValue().getImageUrl());
 	}
 	
 	@Test
