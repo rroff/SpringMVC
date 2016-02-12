@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan("us.roff.springtutorial")
-
 public class JpaIntegrationConfig {
 
 }
