@@ -1,4 +1,4 @@
-package us.roff.springtutorial.services;
+package us.roff.springtutorial.services.jpa;
 
 import java.util.List;
 
@@ -6,20 +6,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import us.roff.springtutorial.domain.Customer;
+import us.roff.springtutorial.services.CustomerService;
+import us.roff.springtutorial.services.security.EncryptionService;
 
 @Service
 @Profile("jpadao")
-public class CustomerServiceJpaDaoImpl implements CustomerService {
+public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements CustomerService {
 	
-	private EntityManagerFactory emf;
+	private EncryptionService encryptionService;
 	
-	@PersistenceUnit
-	public void setEmf(EntityManagerFactory emf) {
-		this.emf = emf;
+	@Autowired
+	public void setEncryptionService(EncryptionService encryptionService) {
+		this.encryptionService = encryptionService;
 	}
 	
 	@Override
@@ -39,6 +42,12 @@ public class CustomerServiceJpaDaoImpl implements CustomerService {
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
+		
+		if ((customer.getUser() != null) && (customer.getUser().getPassword() != null)) {
+			customer.getUser().setEncryptedPassword(
+					encryptionService.encryptString(customer.getUser().getPassword()));
+		}
+		
 		Customer savedCustomer = em.merge(customer);
 		em.getTransaction().commit();
 		

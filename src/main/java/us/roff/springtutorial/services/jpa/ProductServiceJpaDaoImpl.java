@@ -1,4 +1,4 @@
-package us.roff.springtutorial.services;
+package us.roff.springtutorial.services.jpa;
 
 import java.util.List;
 
@@ -10,18 +10,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import us.roff.springtutorial.domain.Product;
+import us.roff.springtutorial.services.ProductService;
 
 @Service
 @Profile("jpadao")
-public class ProductServiceJpaDaoImpl implements ProductService {
+public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements ProductService {
 
-	private EntityManagerFactory emf;
-	
-	@PersistenceUnit
-	public void setEmf(EntityManagerFactory emf) {
-		this.emf = emf;
-	}
-	
 	@Override
 	public List<Product> listAll() {
 		EntityManager em = emf.createEntityManager();

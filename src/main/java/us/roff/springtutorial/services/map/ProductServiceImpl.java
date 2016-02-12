@@ -1,7 +1,5 @@
-package us.roff.springtutorial.services;
+package us.roff.springtutorial.services.map;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.context.annotation.Profile;
@@ -9,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import us.roff.springtutorial.domain.DomainObject;
 import us.roff.springtutorial.domain.Product;
+import us.roff.springtutorial.services.ProductService;
 
 @Service
 @Profile("map")

@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import us.roff.springtutorial.config.JpaIntegrationConfig;
 import us.roff.springtutorial.domain.Customer;
+import us.roff.springtutorial.domain.User;
 
 import static org.junit.Assert.*;
 
@@ -91,6 +92,26 @@ public class CustomerServiceJpaDaoImplTest {
 		assertEquals(city, savedCustomer.getCity());
 		assertEquals(state, savedCustomer.getState());
 		assertEquals(zipCode, savedCustomer.getZipCode());
+	}
+	
+	@Test
+	@DirtiesContext
+	public void testNewWithUser() throws Exception {
+		String username = "someuser";
+		String password = "password";
+		
+		Customer customer = new Customer();
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		customer.setUser(user);
+		
+		Customer savedCustomer = customerService.saveOrUpdate(customer);
+		assertNotNull(savedCustomer);
+		assertNotNull(savedCustomer.getId());
+		assertNotNull(savedCustomer.getUser());
+		assertNotNull(savedCustomer.getUser().getId());
+		assertNotNull(savedCustomer.getUser().getEncryptedPassword());
 	}
 	
 	@Test

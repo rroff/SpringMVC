@@ -1,4 +1,4 @@
-package us.roff.springtutorial.services;
+package us.roff.springtutorial.services.map;
 
 import java.util.ArrayList;
 import java.util.Collections;
