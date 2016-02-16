@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import us.roff.springtutorial.domain.Address;
 import us.roff.springtutorial.domain.Customer;
 import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.CustomerService;
@@ -42,11 +43,13 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		customer.setFirstName("Bill");
 		customer.setEmailAddress("bs@here");
 		customer.setPhoneNumber("321-555-1212");
-		customer.setAddressLine1("123 Main St.");
-		customer.setAddressLine2("Suite 441");
-		customer.setCity("Melbourne");
-		customer.setState("FL");
-		customer.setZipCode("32901");
+		Address address = new Address();		
+		address.setAddressLine1("123 Main St.");
+		address.setAddressLine2("Suite 441");
+		address.setCity("Melbourne");
+		address.setState("FL");
+		address.setZipCode("32901");
+		customer.setBillingAddress(address);
 		customerService.saveOrUpdate(customer);
 		
 		customer = new Customer();
@@ -55,11 +58,13 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		customer.setFirstName("Betty");
 		customer.setEmailAddress("bj@here");
 		customer.setPhoneNumber("407-555-1212");
-		customer.setAddressLine1("444 Orange Ave.");
-		customer.setAddressLine2("");
-		customer.setCity("Orlando");
-		customer.setState("FL");
-		customer.setZipCode("?????");
+		address = new Address();		
+		address.setAddressLine1("444 Orange Ave.");
+		address.setAddressLine2("");
+		address.setCity("Orlando");
+		address.setState("FL");
+		address.setZipCode("?????");
+		customer.setBillingAddress(address);
 		customerService.saveOrUpdate(customer);
 	}
 	

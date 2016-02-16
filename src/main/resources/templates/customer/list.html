@@ -45,11 +45,11 @@
 				<td th:text="${customer.lastName}"></td>
 				<td th:text="${customer.emailAddress}"></td>
 				<td th:text="${customer.phoneNumber}"></td>
-				<td th:text="${customer.addressLine1}"></td>
-				<td th:text="${customer.addressLine2}"></td>
-				<td th:text="${customer.city}"></td>
-				<td th:text="${customer.state}"></td>
-				<td th:text="${customer.zipCode}"></td>
+				<td th:text="${customer.billingAddress.addressLine1}"></td>
+				<td th:text="${customer.billingAddress.addressLine2}"></td>
+				<td th:text="${customer.billingAddress.city}"></td>
+				<td th:text="${customer.billingAddress.state}"></td>
+				<td th:text="${customer.billingAddress.zipCode}"></td>
 				<td><a th:href="${'/customer/edit/' + customer.id}">Edit</a></td>
 				<td><a th:href="${'/customer/delete/' + customer.id}">Delete</a></td>
 			</tr>

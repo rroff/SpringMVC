@@ -7,9 +7,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import scala.annotation.meta.param;
+import us.roff.springtutorial.domain.Address;
 import us.roff.springtutorial.domain.Customer;
 import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.CustomerService;
@@ -104,11 +106,13 @@ public class CustomerControllerTest {
 		returnCustomer.setLastName(lastName);
 		returnCustomer.setEmailAddress(emailAddress);
 		returnCustomer.setPhoneNumber(phoneNumber);
-		returnCustomer.setAddressLine1(addressLine1);
-		returnCustomer.setAddressLine2(addressLine2);
-		returnCustomer.setCity(city);
-		returnCustomer.setState(state);
-		returnCustomer.setZipCode(zipCode);
+		Address address = new Address();
+		address.setAddressLine1(addressLine1);
+		address.setAddressLine2(addressLine2);
+		address.setCity(city);
+		address.setState(state);
+		address.setZipCode(zipCode);
+		returnCustomer.setBillingAddress(address);
 		
 		when(customerService.saveOrUpdate(Matchers.<Customer>any()))
 			.thenReturn(returnCustomer);
@@ -119,11 +123,11 @@ public class CustomerControllerTest {
 			.param("lastName", lastName)
 			.param("emailAddress", emailAddress)
 			.param("phoneNumber", phoneNumber)
-			.param("addressLine1", addressLine1)
-			.param("addressLine2", addressLine2)
-			.param("city", city)
-			.param("state", state)
-			.param("zipCode", zipCode))
+			.param("billingAddress.addressLine1", addressLine1)
+			.param("billingAddress.addressLine2", addressLine2)
+			.param("billingAddress.city", city)
+			.param("billingAddress.state", state)
+			.param("billingAddress.zipCode", zipCode))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/customer/show/"+id))
 				.andExpect(model().attribute("customer", instanceOf(Customer.class)))
@@ -132,11 +136,11 @@ public class CustomerControllerTest {
 				.andExpect(model().attribute("customer", hasProperty("lastName", is(lastName))))
 				.andExpect(model().attribute("customer", hasProperty("emailAddress", is(emailAddress))))
 				.andExpect(model().attribute("customer", hasProperty("phoneNumber", is(phoneNumber))))
-				.andExpect(model().attribute("customer", hasProperty("addressLine1", is(addressLine1))))
-				.andExpect(model().attribute("customer", hasProperty("addressLine2", is(addressLine2))))
-				.andExpect(model().attribute("customer", hasProperty("city", is(city))))
-				.andExpect(model().attribute("customer", hasProperty("state", is(state))))
-				.andExpect(model().attribute("customer", hasProperty("zipCode", is(zipCode))));
+				.andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine1", is(addressLine1)))))
+				.andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine2", is(addressLine2)))))
+				.andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("city", is(city)))))
+				.andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("state", is(state)))))
+				.andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("zipCode", is(zipCode)))));
 		
 		//verify properties of bound object
 		ArgumentCaptor<Customer> boundCustomer = ArgumentCaptor.forClass(Customer.class);
@@ -147,11 +151,11 @@ public class CustomerControllerTest {
 		assertEquals(lastName, boundCustomer.getValue().getLastName());
 		assertEquals(emailAddress, boundCustomer.getValue().getEmailAddress());
 		assertEquals(phoneNumber, boundCustomer.getValue().getPhoneNumber());
-		assertEquals(addressLine1, boundCustomer.getValue().getAddressLine1());
-		assertEquals(addressLine2, boundCustomer.getValue().getAddressLine2());
-		assertEquals(city, boundCustomer.getValue().getCity());
-		assertEquals(state, boundCustomer.getValue().getState());
-		assertEquals(zipCode, boundCustomer.getValue().getZipCode());
+		assertEquals(addressLine1, boundCustomer.getValue().getBillingAddress().getAddressLine1());
+		assertEquals(addressLine2, boundCustomer.getValue().getBillingAddress().getAddressLine2());
+		assertEquals(city, boundCustomer.getValue().getBillingAddress().getCity());
+		assertEquals(state, boundCustomer.getValue().getBillingAddress().getState());
+		assertEquals(zipCode, boundCustomer.getValue().getBillingAddress().getZipCode());
 	}
 	
 	@Test

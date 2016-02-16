@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import us.roff.springtutorial.config.JpaIntegrationConfig;
+import us.roff.springtutorial.domain.Address;
 import us.roff.springtutorial.domain.Customer;
 import us.roff.springtutorial.domain.User;
 
@@ -51,11 +52,11 @@ public class CustomerServiceJpaDaoImplTest {
 		assertEquals(expectedCustomer.getLastName(), actualCustomer.getLastName());
 		assertEquals(expectedCustomer.getEmailAddress(), actualCustomer.getEmailAddress());
 		assertEquals(expectedCustomer.getPhoneNumber(), actualCustomer.getPhoneNumber());
-		assertEquals(expectedCustomer.getAddressLine1(), actualCustomer.getAddressLine1());
-		assertEquals(expectedCustomer.getAddressLine2(), actualCustomer.getAddressLine2());
-		assertEquals(expectedCustomer.getCity(), actualCustomer.getCity());
-		assertEquals(expectedCustomer.getState(), actualCustomer.getState());
-		assertEquals(expectedCustomer.getZipCode(), actualCustomer.getZipCode());
+		assertEquals(expectedCustomer.getBillingAddress().getAddressLine1(), actualCustomer.getBillingAddress().getAddressLine1());
+		assertEquals(expectedCustomer.getBillingAddress().getAddressLine2(), actualCustomer.getBillingAddress().getAddressLine2());
+		assertEquals(expectedCustomer.getBillingAddress().getCity(), actualCustomer.getBillingAddress().getCity());
+		assertEquals(expectedCustomer.getBillingAddress().getState(), actualCustomer.getBillingAddress().getState());
+		assertEquals(expectedCustomer.getBillingAddress().getZipCode(), actualCustomer.getBillingAddress().getZipCode());
 	}
 	
 	@Test
@@ -76,22 +77,24 @@ public class CustomerServiceJpaDaoImplTest {
 		customer.setLastName(lastName);
 		customer.setEmailAddress(emailAddress);
 		customer.setPhoneNumber(phoneNumber);
-		customer.setAddressLine1(addressLine1);
-		customer.setAddressLine2(addressLine2);
-		customer.setCity(city);
-		customer.setState(state);
-		customer.setZipCode(zipCode);
+		Address address = new Address();
+		address.setAddressLine1(addressLine1);
+		address.setAddressLine2(addressLine2);
+		address.setCity(city);
+		address.setState(state);
+		address.setZipCode(zipCode);
+		customer.setBillingAddress(address);
 		
 		Customer savedCustomer = customerService.saveOrUpdate(customer);
 		assertEquals(firstName, savedCustomer.getFirstName());
 		assertEquals(lastName, savedCustomer.getLastName());
 		assertEquals(emailAddress, savedCustomer.getEmailAddress());
 		assertEquals(phoneNumber, savedCustomer.getPhoneNumber());
-		assertEquals(addressLine1, savedCustomer.getAddressLine1());
-		assertEquals(addressLine2, savedCustomer.getAddressLine2());
-		assertEquals(city, savedCustomer.getCity());
-		assertEquals(state, savedCustomer.getState());
-		assertEquals(zipCode, savedCustomer.getZipCode());
+		assertEquals(addressLine1, savedCustomer.getBillingAddress().getAddressLine1());
+		assertEquals(addressLine2, savedCustomer.getBillingAddress().getAddressLine2());
+		assertEquals(city, savedCustomer.getBillingAddress().getCity());
+		assertEquals(state, savedCustomer.getBillingAddress().getState());
+		assertEquals(zipCode, savedCustomer.getBillingAddress().getZipCode());
 	}
 	
 	@Test
@@ -135,11 +138,13 @@ public class CustomerServiceJpaDaoImplTest {
 		customer.setLastName(lastName);
 		customer.setEmailAddress(emailAddress);
 		customer.setPhoneNumber(phoneNumber);
-		customer.setAddressLine1(addressLine1);
-		customer.setAddressLine2(addressLine2);
-		customer.setCity(city);
-		customer.setState(state);
-		customer.setZipCode(zipCode);
+		Address address = new Address();
+		address.setAddressLine1(addressLine1);
+		address.setAddressLine2(addressLine2);
+		address.setCity(city);
+		address.setState(state);
+		address.setZipCode(zipCode);
+		customer.setBillingAddress(address);
 		
 		Customer savedCustomer = customerService.saveOrUpdate(customer);
 		
@@ -149,11 +154,11 @@ public class CustomerServiceJpaDaoImplTest {
 		assertEquals(customer.getLastName(), savedCustomer.getLastName());
 		assertEquals(customer.getEmailAddress(), savedCustomer.getEmailAddress());
 		assertEquals(customer.getPhoneNumber(), savedCustomer.getPhoneNumber());
-		assertEquals(customer.getAddressLine1(), savedCustomer.getAddressLine1());
-		assertEquals(customer.getAddressLine2(), savedCustomer.getAddressLine2());
-		assertEquals(customer.getCity(), savedCustomer.getCity());
-		assertEquals(customer.getState(), savedCustomer.getState());
-		assertEquals(customer.getZipCode(), savedCustomer.getZipCode());
+		assertEquals(customer.getBillingAddress().getAddressLine1(), savedCustomer.getBillingAddress().getAddressLine1());
+		assertEquals(customer.getBillingAddress().getAddressLine2(), savedCustomer.getBillingAddress().getAddressLine2());
+		assertEquals(customer.getBillingAddress().getCity(), savedCustomer.getBillingAddress().getCity());
+		assertEquals(customer.getBillingAddress().getState(), savedCustomer.getBillingAddress().getState());
+		assertEquals(customer.getBillingAddress().getZipCode(), savedCustomer.getBillingAddress().getZipCode());
 	}
 	
 	@Test
