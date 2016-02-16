@@ -31,12 +31,14 @@ public class CustomerServiceJpaDaoImplTest {
 
 	@Test
 	public void testListAll() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Customer> customers = (List<Customer>)customerService.listAll();
 		assertEquals(2, customers.size());
 	}
 	
 	@Test
 	public void testGetById() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Customer> customers = (List<Customer>)customerService.listAll();
 		assertTrue(customers.size() > 0);
 		
@@ -119,6 +121,7 @@ public class CustomerServiceJpaDaoImplTest {
 	
 	@Test
 	public void testUpdate() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Customer> customers = (List<Customer>)customerService.listAll();
 		assertTrue(customers.size() > 0);
 		
@@ -163,12 +166,14 @@ public class CustomerServiceJpaDaoImplTest {
 	
 	@Test
 	public void testDeleteById() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Customer> startCustomers = (List<Customer>)customerService.listAll();
 		assertTrue(startCustomers.size() > 0);
 		
 		Integer idToDelete = startCustomers.get(0).getId();
 		customerService.deleteById(idToDelete);
 		
+		@SuppressWarnings("unchecked")
 		List<Customer> endCustomers = (List<Customer>)customerService.listAll();
 		assertEquals(startCustomers.size() - 1, endCustomers.size());
 		

@@ -7,18 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import scala.annotation.meta.param;
 import us.roff.springtutorial.domain.Address;
 import us.roff.springtutorial.domain.Customer;
-import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.CustomerService;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,6 +36,7 @@ public class CustomerControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testList() throws Exception {
 		List<Customer> customers = new ArrayList<>();

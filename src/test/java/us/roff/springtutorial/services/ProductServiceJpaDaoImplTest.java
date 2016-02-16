@@ -30,12 +30,14 @@ public class ProductServiceJpaDaoImplTest {
 
 	@Test
 	public void testListAll() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>)productService.listAll();
 		assertEquals(5, products.size());
 	}
 	
 	@Test
 	public void testGetById() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>)productService.listAll();
 		assertTrue(products.size() > 0);
 		
@@ -72,6 +74,7 @@ public class ProductServiceJpaDaoImplTest {
 	
 	@Test
 	public void testUpdate() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>)productService.listAll();
 		assertTrue(products.size() > 0);
 		
@@ -96,12 +99,14 @@ public class ProductServiceJpaDaoImplTest {
 	
 	@Test
 	public void testDeleteById() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<Product> startProducts = (List<Product>)productService.listAll();
 		assertTrue(startProducts.size() > 0);
 		
 		Integer idToDelete = startProducts.get(0).getId();
 		productService.deleteById(idToDelete);
 		
+		@SuppressWarnings("unchecked")
 		List<Product> endProducts = (List<Product>)productService.listAll();
 		assertEquals(startProducts.size() - 1, endProducts.size());
 		

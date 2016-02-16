@@ -3,8 +3,6 @@ package us.roff.springtutorial.services.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

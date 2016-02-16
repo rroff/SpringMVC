@@ -112,6 +112,7 @@ public class UserServiceJpaDaoImplTest {
 		
 		user.setCart(new Cart());
 		
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>)productService.listAll();
 		
 		CartDetail cartItem = new CartDetail();
@@ -143,6 +144,7 @@ public class UserServiceJpaDaoImplTest {
 		
 		user.setCart(new Cart());
 		
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>)productService.listAll();
 		
 		CartDetail cartItem = new CartDetail();

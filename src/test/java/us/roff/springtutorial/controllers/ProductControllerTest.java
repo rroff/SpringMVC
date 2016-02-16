@@ -36,6 +36,7 @@ public class ProductControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testList() throws Exception {
 		List<Product> products = new ArrayList<>();

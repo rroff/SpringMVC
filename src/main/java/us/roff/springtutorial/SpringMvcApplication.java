@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 public class SpringMvcApplication {
 
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		ApplicationContext ctx = SpringApplication.run(SpringMvcApplication.class, args);
 		
 //		System.out.println("Bean Count = " + ctx.getBeanDefinitionCount());
