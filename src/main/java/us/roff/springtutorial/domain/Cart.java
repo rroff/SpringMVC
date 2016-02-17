@@ -1,5 +1,6 @@
 package us.roff.springtutorial.domain;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Cart implements DomainObject {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", orphanRemoval = true)
 	private List<CartDetail> cartDetails = new ArrayList<>();
+	
+	private Date dateCreated;
+	private Date dateUpdated;
 	
 	@Override
 	public Integer getId() {
@@ -70,5 +74,21 @@ public class Cart implements DomainObject {
 	public void removeCartDetail(CartDetail cartDetail) {
 		cartDetail.setCart(null);
 		cartDetails.remove(cartDetail);
+	}
+	
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+	
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+	
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 }

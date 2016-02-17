@@ -1,6 +1,7 @@
 package us.roff.springtutorial.domain;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,9 @@ public class Product implements DomainObject {
 	private String description;
 	private BigDecimal price;
 	private String imageUrl;
+	
+	private Date dateCreated;
+	private Date dateUpdated;
 	
 	@Override
 	public Integer getId() {
@@ -62,5 +66,21 @@ public class Product implements DomainObject {
 	
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+	
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+	
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 }

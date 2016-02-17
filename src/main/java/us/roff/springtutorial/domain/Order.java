@@ -1,18 +1,23 @@
 package us.roff.springtutorial.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-public class User implements DomainObject {
+@Table(name="ordertable")
+public class Order implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,22 +26,18 @@ public class User implements DomainObject {
 	@Version
 	private Integer version;
 	
-	private String username;
-	
-	@Transient
-	private String password;
-	
-	private String encryptedPassword;
-	private Boolean enabled = true;
-	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToOne
 	private Customer customer;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	private Cart cart;
+	@Embedded
+	private Address shippingAddress;
 	
 	private Date dateCreated;
 	private Date dateUpdated;
+	private Date dateShipped;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval = true)
+	private List<OrderDetail> orderDetails = new ArrayList<>();
 	
 	@Override
 	public Integer getId() {
@@ -56,53 +57,20 @@ public class User implements DomainObject {
 		this.version = version;
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
-	
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	
 	public Customer getCustomer() {
 		return customer;
 	}
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-		customer.setUser(this);
 	}
 	
-	public Cart getCart() {
-		return cart;
+	public Address getShippingAddress() {
+		return shippingAddress;
 	}
 	
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setShippingAddress(Address shippingAddress) {
+		this.shippingAddress = shippingAddress;
 	}
 	
 	public Date getDateCreated() {
@@ -119,5 +87,31 @@ public class User implements DomainObject {
 	
 	public void setDateUpdated(Date dateUpdated) {
 		this.dateUpdated = dateUpdated;
+	}
+	
+	public Date getDateShipped() {
+		return dateShipped;
+	}
+	
+	public void setDateShipped(Date dateShipped) {
+		this.dateShipped = dateShipped;
+	}
+	
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+	
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
+	public void addOrderDetail(OrderDetail orderDetail) {
+		orderDetails.add(orderDetail);
+		orderDetail.setOrder(this);
+	}
+	
+	public void removeOrderDetail(OrderDetail orderDetail) {
+		orderDetail.setOrder(null);
+		orderDetails.remove(orderDetail);
 	}
 }
