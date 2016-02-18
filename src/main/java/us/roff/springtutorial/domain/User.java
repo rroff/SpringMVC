@@ -1,26 +1,13 @@
 package us.roff.springtutorial.domain;
 
-import java.sql.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 @Entity
-public class User implements DomainObject {
+public class User extends AbstractDomainObject {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	
-	@Version
-	private Integer version;
-	
 	private String username;
 	
 	@Transient
@@ -34,27 +21,6 @@ public class User implements DomainObject {
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Cart cart;
-	
-	private Date dateCreated;
-	private Date dateUpdated;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
-	
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public Integer getVersion() {
-		return version;
-	}
-	
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
 	
 	public String getUsername() {
 		return username;
@@ -106,21 +72,5 @@ public class User implements DomainObject {
 	
 	public void setCart(Cart cart) {
 		this.cart = cart;
-	}
-	
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-	
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	public Date getDateUpdated() {
-		return dateUpdated;
-	}
-	
-	public void setDateUpdated(Date dateUpdated) {
-		this.dateUpdated = dateUpdated;
 	}
 }
