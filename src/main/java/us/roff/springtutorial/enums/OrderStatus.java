@@ -1,4 +1,4 @@
-package us.roff.springtutorial.domain;
+package us.roff.springtutorial.enums;
 
 public enum OrderStatus {
 	NEW,

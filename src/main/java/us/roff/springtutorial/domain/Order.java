@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import us.roff.springtutorial.enums.OrderStatus;
+
 @Entity
 @Table(name="ordertable")
 public class Order extends AbstractDomainObject {
@@ -20,6 +22,8 @@ public class Order extends AbstractDomainObject {
 	
 	@Embedded
 	private Address shippingAddress;
+	
+	private OrderStatus orderStatus = OrderStatus.NEW;
 	
 	private Date dateShipped;
 	
@@ -40,6 +44,14 @@ public class Order extends AbstractDomainObject {
 	
 	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
+	}
+	
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+	
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 	
 	public Date getDateShipped() {
