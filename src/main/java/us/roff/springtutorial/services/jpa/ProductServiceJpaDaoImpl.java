@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import us.roff.springtutorial.domain.OrderDetail;
 import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.services.ProductService;
 
@@ -44,6 +45,16 @@ public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements P
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
+		
+		// Delete Order Detail records containing product.
+		// TODO: This is probably not the best idea...
+		List<OrderDetail> orderDetails =
+				em.createQuery("SELECT d FROM OrderDetail d JOIN d.product p WHERE p.id = :id", OrderDetail.class)
+					.setParameter("id", id) .getResultList();
+		for (OrderDetail orderDetail : orderDetails) {
+			em.remove(em.find(OrderDetail.class, orderDetail.getId()));
+		}
+		
 		em.remove(em.find(Product.class, id));
 		em.getTransaction().commit();
 	}

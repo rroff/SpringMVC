@@ -1,11 +1,15 @@
 package us.roff.springtutorial.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
@@ -30,8 +34,11 @@ public class Customer implements DomainObject {
 	@Embedded
 	private Address shippingAddress;
 	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToOne(cascade = {CascadeType.ALL})
 	private User user;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
 	
 	@Override
 	public Integer getId() {
@@ -105,5 +112,23 @@ public class Customer implements DomainObject {
 	
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	
+	public void addOrder(Order order) {
+		orders.add(order);
+		order.setCustomer(this);
+	}
+	
+	public void removeOrder(Order order) {
+		order.setCustomer(null);
+		orders.remove(order);
 	}
 }

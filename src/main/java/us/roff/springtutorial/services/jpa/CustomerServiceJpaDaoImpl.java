@@ -55,7 +55,7 @@ public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements 
 	@Override
 	public void deleteById(Integer id) {
 		EntityManager em = emf.createEntityManager();
-		
+			
 		em.getTransaction().begin();
 		em.remove(em.find(Customer.class, id));
 		em.getTransaction().commit();

@@ -94,7 +94,10 @@ public class User implements DomainObject {
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-		customer.setUser(this);
+		
+		if (customer != null) {
+			customer.setUser(this);
+		}
 	}
 	
 	public Cart getCart() {

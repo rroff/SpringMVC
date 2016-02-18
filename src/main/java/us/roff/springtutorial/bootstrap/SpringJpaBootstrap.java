@@ -1,6 +1,9 @@
 package us.roff.springtutorial.bootstrap;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -9,9 +12,14 @@ import org.springframework.stereotype.Component;
 
 import us.roff.springtutorial.domain.Address;
 import us.roff.springtutorial.domain.Customer;
+import us.roff.springtutorial.domain.Order;
+import us.roff.springtutorial.domain.OrderDetail;
 import us.roff.springtutorial.domain.Product;
+import us.roff.springtutorial.domain.User;
 import us.roff.springtutorial.services.CustomerService;
+import us.roff.springtutorial.services.OrderService;
 import us.roff.springtutorial.services.ProductService;
+import us.roff.springtutorial.services.UserService;
 
 @Component
 public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedEvent>{
@@ -19,6 +27,10 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 	private CustomerService customerService;
 	
 	private ProductService productService;
+	
+	private UserService userService;
+	
+	private OrderService orderService;
 	
 	@Autowired
 	public void setCustomerService(CustomerService customerService) {
@@ -30,10 +42,22 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		this.productService = productService;
 	}
 	
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
+	@Autowired
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
+	}
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		loadCustomers();
 		loadProducts();
+		loadUsers();
+		loadOrders();
 	}
 	
 	public void loadCustomers() {
@@ -63,7 +87,7 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		address.setAddressLine2("");
 		address.setCity("Orlando");
 		address.setState("FL");
-		address.setZipCode("?????");
+		address.setZipCode("33911");
 		customer.setBillingAddress(address);
 		customerService.saveOrUpdate(customer);
 	}
@@ -103,5 +127,93 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		product.setPrice(new BigDecimal("25.99"));
 		product.setImageUrl("http://example.com/product5");
 		productService.saveOrUpdate(product);
+	}
+	
+	public void loadUsers() {
+		@SuppressWarnings("unchecked")
+		List<Customer> customers = (List<Customer>)customerService.listAll();
+		
+		for (Customer customer : customers) {
+			String username = (customer.getFirstName().charAt(0)
+					          + customer.getLastName()).toLowerCase();
+			String password = "Password1";
+			User user = new User();
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setCustomer(customer);
+			userService.saveOrUpdate(user);
+		}
+	}
+	
+	public void loadOrders() {
+		@SuppressWarnings("unchecked")
+		List<Customer> customers = (List<Customer>)customerService.listAll();
+		
+		@SuppressWarnings("unchecked")
+		List<Product> products = (List<Product>)productService.listAll();
+		
+		Order order = new Order();
+		order.setCustomer(customers.get(0));
+		Address address = new Address();
+		address.setAddressLine1("123 Kettle Run Rd.");
+		address.setCity("Atco");
+		address.setState("NJ");
+		address.setZipCode("08004");
+		order.setShippingAddress(address);
+		
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(0));
+		orderDetail.setQuantity(4);
+		order.addOrderDetail(orderDetail);
+		
+		orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(4));
+		orderDetail.setQuantity(1);
+		order.addOrderDetail(orderDetail);
+		
+		orderService.saveOrUpdate(order);
+		
+		order = new Order();
+		order.setCustomer(customers.get(0));
+		address = new Address();
+		address.setAddressLine1("123 Kettle Run Rd.");
+		address.setCity("Atco");
+		address.setState("NJ");
+		address.setZipCode("08004");
+		order.setShippingAddress(address);
+		
+		orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(2));
+		orderDetail.setQuantity(10);
+		order.addOrderDetail(orderDetail);
+		
+		orderService.saveOrUpdate(order);
+		
+		order = new Order();
+		order.setCustomer(customers.get(1));
+		address = new Address();
+		address.setAddressLine1("445 Roosevelt Blvd.");
+		address.setAddressLine1("Suite 5A");
+		address.setCity("Philadelphia");
+		address.setState("PA");
+		address.setZipCode("19134");
+		order.setShippingAddress(address);
+		
+		orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(0));
+		orderDetail.setQuantity(5);
+		order.addOrderDetail(orderDetail);
+		
+		orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(1));
+		orderDetail.setQuantity(1);
+		order.addOrderDetail(orderDetail);
+		
+		orderDetail = new OrderDetail();
+		orderDetail.setProduct(products.get(3));
+		orderDetail.setQuantity(1);
+		order.addOrderDetail(orderDetail);
+		
+		orderService.saveOrUpdate(order);
 	}
 }
