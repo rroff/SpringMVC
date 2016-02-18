@@ -1,9 +1,16 @@
 package us.roff.springtutorial.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+
+import us.roff.springtutorial.domain.security.Role;
 
 @Entity
 public class User extends AbstractDomainObject {
@@ -21,6 +28,13 @@ public class User extends AbstractDomainObject {
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Cart cart;
+	
+	@ManyToMany
+	@JoinTable
+	// NOTE: Defaults to
+	//       @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_id"),
+	//                  inverseJoinColumn = @joinColumn(name = "role_id"))
+	private List<Role> roles = new ArrayList<>();
 	
 	public String getUsername() {
 		return username;
@@ -72,5 +86,28 @@ public class User extends AbstractDomainObject {
 	
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+	public void addRole(Role role) {
+		if (!roles.contains(role)) {
+			roles.add(role);
+		}
+		
+		if (!role.getUsers().contains(this)) {
+			role.getUsers().add(this);
+		}
+	}
+	
+	public void removeRole(Role role) {
+		roles.remove(role);
+		role.getUsers().remove(this);
 	}
 }

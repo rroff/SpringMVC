@@ -14,9 +14,11 @@ import us.roff.springtutorial.domain.Order;
 import us.roff.springtutorial.domain.OrderDetail;
 import us.roff.springtutorial.domain.Product;
 import us.roff.springtutorial.domain.User;
+import us.roff.springtutorial.domain.security.Role;
 import us.roff.springtutorial.services.CustomerService;
 import us.roff.springtutorial.services.OrderService;
 import us.roff.springtutorial.services.ProductService;
+import us.roff.springtutorial.services.RoleService;
 import us.roff.springtutorial.services.UserService;
 
 @Component
@@ -29,6 +31,8 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 	private UserService userService;
 	
 	private OrderService orderService;
+	
+	private RoleService roleService;
 	
 	@Autowired
 	public void setCustomerService(CustomerService customerService) {
@@ -50,12 +54,20 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		this.orderService = orderService;
 	}
 	
+	@Autowired
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		loadCustomers();
 		loadProducts();
 		loadUsers();
 		loadOrders();
+		
+		loadRoles();
+		assignUsersToDefaultRole();
 	}
 	
 	public void loadCustomers() {
@@ -191,7 +203,7 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		order.setCustomer(customers.get(1));
 		address = new Address();
 		address.setAddressLine1("445 Roosevelt Blvd.");
-		address.setAddressLine1("Suite 5A");
+		address.setAddressLine2("Suite 5A");
 		address.setCity("Philadelphia");
 		address.setState("PA");
 		address.setZipCode("19134");
@@ -213,5 +225,26 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 		order.addOrderDetail(orderDetail);
 		
 		orderService.saveOrUpdate(order);
+	}
+	
+	public void loadRoles() {
+		Role role = new Role();
+		role.setRole("CUSTOMER");
+		roleService.saveOrUpdate(role);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void assignUsersToDefaultRole() {
+		List<Role> roles = (List<Role>)roleService.listAll();
+		List<User> users = (List<User>)userService.listAll();
+		
+		for (Role role : roles) {
+			if (role.getRole().equalsIgnoreCase("CUSTOMER")) {
+				for (User user : users) {
+					user.addRole(role);
+					userService.saveOrUpdate(user);
+				}
+			}
+		}
 	}
 }
